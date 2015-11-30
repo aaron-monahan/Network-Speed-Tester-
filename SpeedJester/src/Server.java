@@ -21,7 +21,7 @@ public class Server {
         while(true)
         {
 			Socket socket = serverSocket.accept();
-			socket.setSoTimeout(10000); // inputstream's read times out if no data came after 3 seconds
+			socket.setSoTimeout(50000); // inputstream's read times out if no data came after 50 seconds
 			executorService.execute(new ServerConnectionHandler(socket));
 			System.out.println("Socket successfully opened from client, beginning file transfer.");
         }

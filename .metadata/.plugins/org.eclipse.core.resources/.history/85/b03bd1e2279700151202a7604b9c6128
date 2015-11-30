@@ -1,0 +1,38 @@
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Server {
+	private int port;
+	private ServerSocket serverSocket;
+	private ExecutorService executorService;
+	
+    public Server(int port){
+    	this.port = port;
+    }
+    
+    public void run() throws IOException{
+        System.out.println("Starting service listening on " + port);
+        executorService = Executors.newFixedThreadPool(10); //only accept 10 connections per server
+        serverSocket = new ServerSocket(this.port);
+        
+        while(true)
+        {
+			Socket socket = serverSocket.accept();
+			socket.setSoTimeout(30000); // inputstream's read times out if no data came after 50 seconds
+			executorService.execute(new ServerConnectionHandler(socket));
+			System.out.println("Socket successfully opened from client, beginning file transfer.");
+        }
+    }
+    
+    public void closeConnection(){
+    	try {
+			serverSocket.close();
+		} catch (IOException e) {
+			System.out.println("Error: Socket already closed...");
+		}
+    }
+
+}

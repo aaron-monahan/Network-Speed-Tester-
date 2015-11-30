@@ -4,9 +4,20 @@ import java.net.Socket;
 public class ServerConnectionHandler implements Runnable{
 	
 	private Socket socket;
+	private String downloadChunk;
+	private static final int BUFFER_SIZE = 16384;
+	
 	
 	public ServerConnectionHandler(Socket socket){
 		this.socket = socket;
+		StringBuffer downloadChunkBuffer = new StringBuffer();
+		int size = BUFFER_SIZE;
+    	while(size > 0)
+    	{
+    		size--;
+    		downloadChunkBuffer.append('t');
+    	}
+    	downloadChunk = downloadChunkBuffer.toString();
 	}
 
 	@Override
@@ -14,17 +25,21 @@ public class ServerConnectionHandler implements Runnable{
 		BufferedReader reader = null;
 	    PrintWriter writer = null;
 	    try {
+	    	System.out.println( "size buffer: " + socket.getReceiveBufferSize());
 	      reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	      writer = new PrintWriter(socket.getOutputStream(), true);
 	 
 	      // The read loop. Code only exits this loop if connection is lost / client disconnects
 	      while(true) {
 	        String line = reader.readLine();
-	        
-	        
-	        if(line == null) break;
-	        writer.println("Echo: " + line);
+	        if(line == "done") break;
+	        writer.println(downloadChunk);
 	      }
+	      while(true) {
+		        String line = reader.readLine();
+		        if(line == "done") break;
+		        writer.println(downloadChunk);
+		  }
 	    } catch (IOException e) {
 	      throw new RuntimeException(e);
 	    } finally {
@@ -36,5 +51,7 @@ public class ServerConnectionHandler implements Runnable{
 	      }
 	    }
 	}
+	
+	
 
 }
