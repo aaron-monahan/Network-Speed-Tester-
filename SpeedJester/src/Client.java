@@ -1,16 +1,14 @@
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Client {
 	private String host;
 	private int port;
 	private Socket socket;
 	
-    private static final int BUFFER_SIZE = 8192;
-    private static final String INVALID_FILENAME = "The filename does not exist: ";
-    
-    
+//    private static final int BUFFER_SIZE = 8192;
+//    private static final String INVALID_FILENAME = "The filename does not exist: ";
+	
     public Client(String host, int port){
     	this.host = host;
     	this.port = port;
