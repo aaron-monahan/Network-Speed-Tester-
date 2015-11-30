@@ -20,8 +20,6 @@ public class ServerConnectionHandler implements Runnable{
 	      // The read loop. Code only exits this loop if connection is lost / client disconnects
 	      while(true) {
 	        String line = reader.readLine();
-	        
-	        
 	        if(line == null) break;
 	        writer.println("Echo: " + line);
 	      }
