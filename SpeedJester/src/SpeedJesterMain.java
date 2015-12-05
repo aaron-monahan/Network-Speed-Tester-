@@ -9,7 +9,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	
 	private JButton client, server, exit;
 	private JPanel controlButtonsPanel;
-	public static final int BUFFER_SIZE = 16; //KB
+	public static final int BUFFER_SIZE = 64; //KB
 	
 	public SpeedJesterMain()
 	{
@@ -75,7 +75,8 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	
 	private void clientMode()
 	{
-		this.remove(controlButtonsPanel);
+		client.setEnabled(false);
+		server.setEnabled(false);
 		
 		System.out.println("Client Mode!");
 		

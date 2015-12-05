@@ -6,15 +6,10 @@ public class Client {
 	private int port;
 	private double downloadSpeed;
 	private Socket socket;
-	
-//    private static final int BUFFER_SIZE = 16384;
-   // public static final int BUFFER_SIZE = 16;
-      
     
     public Client(String host, int port){
     	this.host = host;
     	this.port = port;
-
     }
     
     
@@ -34,6 +29,7 @@ public class Client {
         
     	downloadSpeed = 0;
     	startTestTime =  System.currentTimeMillis( );
+    	dataOut.println("start");
         while((startTestTime + testDuration) > currentTime)
         {
         	dataOut.println("d");
@@ -43,14 +39,11 @@ public class Client {
         	setDownloadSpeed((double) (currentTime - startTestTime),interactions);
         }
         dataOut.println("done");
-        
     }
     
     private void setDownloadSpeed(double time, int interactions)
     {
     	// buffer 16384 = 16KB 
-
-    	
     	downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
     	
     	
@@ -58,25 +51,11 @@ public class Client {
 	    	System.out.println( "time : " + time);
 	    	System.out.println( "download : " + (downloadSpeed/1024));
     	
-    	
     }
 
     public double getDownloadSpeed(){
     	return downloadSpeed;
     }
-    
-    
-//    private String prepareDownloadTest(int size){
-//    	StringBuffer myTest = new StringBuffer();
-//    	
-//    	while(size > 0)
-//    	{
-//    		size--;
-//    		myTest.append('t');
-//    	}
-//    	
-//    	return myTest.toString();
-//    }
     
     public void closeConnection(){
     	try {
