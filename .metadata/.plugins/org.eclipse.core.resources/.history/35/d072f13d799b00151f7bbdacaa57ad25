@@ -1,0 +1,42 @@
+import java.io.IOException;
+import javax.swing.*;
+
+
+@SuppressWarnings("serial")
+public class SpeedJesterMain{
+	
+	private JFrame frame;
+	
+	
+
+	public static void main(String[] args)
+	{
+		
+		if(Integer.parseInt(args[0]) == 1)
+		{
+			System.out.println("Server Mode!");
+			
+			Server s = new Server(5526);
+			try {
+				s.run();
+				s.closeConnection();
+			} catch (IOException e) {
+				System.out.println("Error: Connection could not be established...");
+			}
+		}else{
+			System.out.println("Client Mode!");
+			
+			Client c = new Client("172.20.10.5", 5526);
+			try {
+				c.downloadTest();
+				//System.out.println(c.getDownloadSpeed() / 1048576);
+				System.out.println(c.getDownloadSpeed() / 1024);
+				c.closeConnection();
+			} catch (IOException e) {
+				System.out.println("Error: Connection could not be established...");
+			}
+		}
+		
+		
+	}
+}

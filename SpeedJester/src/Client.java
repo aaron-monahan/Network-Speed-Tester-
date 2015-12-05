@@ -8,7 +8,7 @@ public class Client {
 	private Socket socket;
 	
 //    private static final int BUFFER_SIZE = 16384;
-    private static final int BUFFER_SIZE = 16;
+   // public static final int BUFFER_SIZE = 16;
       
     
     public Client(String host, int port){
@@ -51,13 +51,13 @@ public class Client {
     	// buffer 16384 = 16KB 
 
     	
-    	downloadSpeed = ((interactions * BUFFER_SIZE) / (time / 1000)) * 8;
+    	downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
     	
-    	if(time % 1000 == 0){
+    	
     		System.out.println( "interaction : " + interactions);
 	    	System.out.println( "time : " + time);
 	    	System.out.println( "download : " + (downloadSpeed/1024));
-    	}
+    	
     	
     }
 

@@ -1,0 +1,78 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.swing.*;
+
+
+@SuppressWarnings("serial")
+public class SpeedJesterMain extends JFrame implements ActionListener{
+	
+	private JButton client, server, exit;
+	
+	public SpeedJesterMain()
+	{
+		this.setSize(500,500);
+		this.setTitle("SpeedJester");
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+	}
+
+	public static void main(String[] args)
+	{
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if( e.getSource() == client )
+		{
+			serverMode();
+		}
+		else if(e.getSource() == client)
+		{
+			clientMode();
+		}
+		else if(e.getSource() == exit )
+		{
+			exitHandler();
+		}
+		
+	}
+	
+	private void serverMode()
+	{
+		System.out.println("Server Mode!");
+		
+		Server s = new Server(5526);
+		try {
+			s.run();
+			s.closeConnection();
+		} catch (IOException e) {
+			System.out.println("Error: Connection could not be established...");
+		}		
+	}
+	
+	private void clientMode()
+	{
+		System.out.println("Client Mode!");
+		
+		Client c = new Client("127.0.0.1", 5526);
+		try {
+			c.downloadTest();
+			//System.out.println(c.getDownloadSpeed() / 1048576);
+			System.out.println(c.getDownloadSpeed() / 1024);
+			c.closeConnection();
+		} catch (IOException e) {
+			System.out.println("Error: Connection could not be established...");
+		}
+	}
+	
+	private void exitHandler()
+	{
+		int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to Exit?",
+				"Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		
+		if( selection == JOptionPane.YES_OPTION)
+			System.exit( 0 );
+	}
+}

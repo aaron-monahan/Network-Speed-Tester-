@@ -5,19 +5,10 @@ public class ServerConnectionHandler implements Runnable{
 	
 	private Socket socket;
 	private String downloadChunk;
-	private static final int BUFFER_SIZE = 16384;
-	
 	
 	public ServerConnectionHandler(Socket socket){
 		this.socket = socket;
-		StringBuffer downloadChunkBuffer = new StringBuffer();
-		int size = BUFFER_SIZE;
-    	while(size > 0)
-    	{
-    		size--;
-    		downloadChunkBuffer.append('t');
-    	}
-    	downloadChunk = downloadChunkBuffer.toString();
+		downloadChunk = (new ChunkGenerator(SpeedJesterMain.BUFFER_SIZE)).generate();
 	}
 
 	@Override
@@ -35,11 +26,6 @@ public class ServerConnectionHandler implements Runnable{
 	        if(line == "done") break;
 	        writer.println(downloadChunk);
 	      }
-	      while(true) {
-		        String line = reader.readLine();
-		        if(line == "done") break;
-		        writer.println(downloadChunk);
-		  }
 	    } catch (IOException e) {
 	      throw new RuntimeException(e);
 	    } finally {
