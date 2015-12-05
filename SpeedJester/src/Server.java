@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class Server extends JFrame implements ActionListener{
 	private int port;
-	private boolean alive = false;
+	private boolean alive = true;
 	private JButton start, stop, exit;
 	private ServerSocket serverSocket;
 	private ExecutorService executorService;
