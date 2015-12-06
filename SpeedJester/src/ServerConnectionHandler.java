@@ -35,19 +35,17 @@ public class ServerConnectionHandler implements Runnable{
 	        }
 	        writer.println(downloadChunk);
 	      }
-
-		downloadSpeed = 0;
-	    	startTestTime =  System.currentTimeMillis( );
-	    	dataOut.println("start upload");
+	    startTestTime =  System.currentTimeMillis( );
+	    writer.println("start upload");
 		while((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime)
 		{
 			
-			dataIn.readLine();
+			reader.readLine();
 			interactions++;
 			currentTime = System.currentTimeMillis();
-			dataOut.println("upload " + setDownloadSpeed((double) (currentTime - startTestTime),interactions));
+			writer.println("upload " + setDownloadSpeed((double) (currentTime - startTestTime),interactions));
 		}
-	        dataOut.println("upload done");
+		writer.println("upload done");
 
 
 	      
@@ -62,18 +60,20 @@ public class ServerConnectionHandler implements Runnable{
 	      }
 	    }
 
-	private long setDownloadSpeed(double time, int interactions) {
-    	// buffer 16384 = 16KB 
 
+	}
+	
+	private double setDownloadSpeed(double time, int interactions) {
+    	// buffer 16384 = 16KB 
+			
+		double downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
+		
     		System.out.println( "interaction : " + interactions);
 	    	System.out.println( "time : " + time);
 	    	System.out.println( "download : " + (downloadSpeed/1024));
 		
-		return ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
+		return downloadSpeed;
     	
-    	}
-	}
-	
-	
+    }
 	
 }

@@ -79,8 +79,8 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		server.setEnabled(false);
 		
 		System.out.println("Client Mode!");
-		
-		Client c = new Client("127.0.0.1", 5526);
+		Client c = new Client("10.212.26.174", 5526);
+		//Client c = new Client("localhost", 5526);
 		try {
 			c.downloadTest();
 			//System.out.println(c.getDownloadSpeed() / 1048576);
