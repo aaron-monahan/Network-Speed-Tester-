@@ -15,8 +15,9 @@ public class Client {
     
     public void downloadTest() throws IOException
     {
+
     	long startTestTime = 0;
-    	long testDuration = 20000; //20 seconds
+	boolean done = false;
     	long currentTime = 0;
     	int interactions = 0;
     	socket =  new Socket(host, port);
@@ -26,11 +27,14 @@ public class Client {
     	BufferedReader dataIn =  new BufferedReader(new InputStreamReader(socket.getInputStream()));
     	PrintWriter dataOut = new PrintWriter(socket.getOutputStream(), true);
     	System.out.println( "size buffer: " + socket.getReceiveBufferSize());
-        
+	
+	String uploadChunk;	
+	uploadChunk = (new ChunkGenerator(SpeedJesterMain.BUFFER_SIZE)).generate();        
+
     	downloadSpeed = 0;
     	startTestTime =  System.currentTimeMillis( );
     	dataOut.println("start");
-        while((startTestTime + testDuration) > currentTime)
+        while((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime)
         {
         	dataOut.println("d");
         	dataIn.readLine();
@@ -38,7 +42,20 @@ public class Client {
         	currentTime = System.currentTimeMillis();
         	setDownloadSpeed((double) (currentTime - startTestTime),interactions);
         }
-        dataOut.println("done");
+        dataOut.println("download done");
+	
+	String line;	
+
+      while(!done && ((line = dataIn.readLine()) != null)) {
+        if(line.compareTo("upload done") == 0)
+        {
+		done = true;
+		System.out.println( "Upload Test concluded!");
+        }
+	System.out.println(line);
+        dataOut.println(uploadChunk);
+      }
+
     }
     
     private void setDownloadSpeed(double time, int interactions)

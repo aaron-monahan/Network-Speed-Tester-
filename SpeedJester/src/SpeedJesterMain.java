@@ -10,7 +10,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	private JButton client, server, exit;
 	private JPanel controlButtonsPanel;
 	public static final int BUFFER_SIZE = 64; //KB
-	
+	public static final int TEST_DURATION = 10000;
 	public SpeedJesterMain()
 	{
 		this.setSize(500,500);
