@@ -2,12 +2,12 @@ import java.io.*;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.net.InetAddress;
 
-public class Server extends JPanel implements ActionListener{
+public class Server extends JFrame implements ActionListener{
 	private int port;
 	private boolean alive = true;
 	private JButton start, stop, exit;
@@ -15,40 +15,20 @@ public class Server extends JPanel implements ActionListener{
 	private ExecutorService executorService;
 	
     public Server(int port){
+    	super();
     	this.port = port;
-        String ipAdd = "Null";
-        
-        this.setLayout ( new BorderLayout() );
-        this.setBorder( BorderFactory.createEmptyBorder(10,10,10,10));
-        JLabel servLab = new JLabel("Server listening...", SwingConstants.CENTER);
-        try {
-            ipAdd = InetAddress.getLocalHost().toString();
-        }
-        catch (UnknownHostException e) {
-            ipAdd = "Ip: Unknown";
-        }
-        JLabel ipLab = new JLabel( "Ip: " + ipAdd , SwingConstants.CENTER);
-        JLabel portLab = new JLabel( "Port: " + port , SwingConstants.CENTER);
     	
-    	this.add(servLab, "North");
-    	this.add(ipLab, "Center");
-    	this.add(portLab, "South");
-    	
-    	//this.repaint();
-    	
-    	//start = new JButton("Start");
-    	//stop = new JButton("Stop");
-		//exit = new JButton("Exit");
+    	start = new JButton("Start");
+    	stop = new JButton("Stop");
+		exit = new JButton("Exit");
 		
-		//this.add(start);
-		//this.add(stop);
-		//this.add(exit);
+		this.add(start);
+		this.add(stop);
+		this.add(exit);
 		
-		//InetAddress.getLocalHost()
-		
-		//start.addActionListener(this);
-		//stop.addActionListener(this);
-		//exit.addActionListener(this);
+		start.addActionListener(this);
+		stop.addActionListener(this);
+		exit.addActionListener(this);
     }
     
     public void run() throws IOException{

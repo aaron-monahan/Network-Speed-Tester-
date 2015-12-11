@@ -9,39 +9,30 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	
 	private JButton client, server, exit;
 	private JPanel controlButtonsPanel;
-	private JLabel logo, footer;
+	private ClientPanel clientPanel;
 	public static final int BUFFER_SIZE = 64; //KB
 	public static final int TEST_DURATION = 10000;
 	public SpeedJesterMain()
 	{
-		this.setSize(400,250);
+		this.setSize(500,500);
 		this.setTitle("SpeedJester");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getRootPane().setBorder( BorderFactory.createEmptyBorder(10,10,5,10));
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		controlButtonsPanel = new JPanel();
 		controlButtonsPanel.setLayout(new FlowLayout());
-		controlButtonsPanel.setBorder( BorderFactory.createEmptyBorder(20,0,0,0));
 		
-		logo = new JLabel( new  ImageIcon("speedLogo.fw.png") );
-		footer = new JLabel( "Developed by Wild Mutants", SwingConstants.CENTER);
 		client = new JButton("Client Mode");
 		server = new JButton("Server Mode");
 		exit = new JButton("Exit");
 		
 		controlButtonsPanel.add(client);
 		controlButtonsPanel.add(server);
-		//controlButtonsPanel.add(exit);
+		controlButtonsPanel.add(exit);
 		
 		client.addActionListener(this);
 		server.addActionListener(this);
 		exit.addActionListener(this);
 		
-	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		
-		this.add(logo, "North");
-		this.add(footer, "South");
 		this.add(controlButtonsPanel, "Center");
 		this.setVisible(true);
 	}
@@ -55,7 +46,14 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == client )
 		{
-		    this.setSize(450,300);
+		    this.remove(controlButtonsPanel);
+		    Insets insets = this.getInsets();
+		    this.setSize(400 + insets.left + insets.right, 300 + insets.top + insets.bottom);
+		    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		    clientPanel = new ClientPanel();
+		    this.add(clientPanel);
+		    this.repaint();
 			clientMode();
 		}
 		else if(e.getSource() == server)
@@ -73,25 +71,33 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	{
 		this.remove(controlButtonsPanel);
 		System.out.println("Server Mode!");
-		this.setSize(300,200);
+		
 		Server s = new Server(5526);
-		this.add(s);
-		this.repaint();
 		try {
 			s.run();
 			s.closeConnection();
 		} catch (IOException e) {
 			System.out.println("Error: Connection could not be established...");
 		}
+		this.repaint();
 	}
 	
 	private void clientMode()
 	{
-		this.remove(controlButtonsPanel);
+		client.setEnabled(false);
+		server.setEnabled(false);
 		
 		System.out.println("Client Mode!");
-		Client c = new Client();
-		this.add(c);
+//		Client c = new Client("192.168.1.4", 5526);
+        clientPanel.getIp();
+		Client c = new Client( clientPanel.getIp(), clientPanel.getPort() );
+		
+		c.downloadTest();
+		//System.out.println(c.getDownloadSpeed() / 1024);
+		c.uploadTest();
+		
+		
+		
 		this.repaint();
 	}
 	

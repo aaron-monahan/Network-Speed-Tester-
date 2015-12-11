@@ -13,93 +13,70 @@ public class Client extends JPanel implements ActionListener{
 	private BufferedReader dataIn;
 	private PrintWriter dataOut;
 
+    private Dimension size;
+    private Insets insets;
+
     private JLabel down, up, ipL, portL;
     private JTextField ipB, portB;
-    private JButton change, stop, connect;
-    private JPanel ipPortArea, ConBut, downPanel, upPanel, butPanel;
+    private JButton start, stop, connect;
+    private String ip;
 
-	public Client() {
-        this.setLayout(new FlowLayout());
+	public Client() {	
     	connectScreen();
 	}
 
     public void connectScreen() {
-        ipPortArea = new JPanel (new FlowLayout());
-        ConBut = new JPanel (new FlowLayout());
-        ConBut.setBorder( BorderFactory.createEmptyBorder(20,0,0,0));
-	    ipPortArea.setBorder( BorderFactory.createTitledBorder( BorderFactory.createLineBorder(Color.black) , "Server:") );
+        this.setLayout(null);
+	    this.setBorder( BorderFactory.createTitledBorder( BorderFactory.createLineBorder(Color.black) , "Server:") );
+	    insets = this.getInsets();
 
 		ipL = new JLabel("IP Address: ");
 		portL = new JLabel("Port: ");
 		
 		ipB = new JTextField();
 		portB = new JTextField();
-		ipB.setPreferredSize (new Dimension(100,24));
-		portB.setPreferredSize (new Dimension(100,24));
 		
 		connect = new JButton("Connect");
-		ConBut.add(connect);
-		connect.addActionListener(this);
 		
-		ipPortArea.add(ipL);
-		ipPortArea.add(ipB);
-		ipPortArea.add(portL);
-		ipPortArea.add(portB);
+		this.add(connect);
+		this.add(ipL);
+		this.add(portL);
+		this.add(ipB);
+		this.add(portB);
 		
-		this.add(ipPortArea);
-		this.add(ConBut);
-		this.repaint();
+	    size = ipL.getPreferredSize();
+	    ipL.setBounds(5 + insets.left, 5 + insets.top, size.width, size.height);
+	    size = portL.getPreferredSize();
+	    portL.setBounds(5 + insets.left, 30 + insets.top, size.width, size.height);
+	    size = ipB.getPreferredSize();
+	    ipB.setBounds(100 + insets.left, 5 + insets.top, 100 + size.width, size.height);
+	    size = portB.getPreferredSize();
+	    portB.setBounds(100 + insets.left, 30 + insets.top, 100 + size.width, size.height);
+	    size = connect.getPreferredSize();
+	    connect.setBounds(150 + insets.left, 60 + insets.top, 100 + size.width, size.height);
     }
 
     public void testScreen() {
-        downPanel = new JPanel (new BorderLayout());
-        upPanel = new JPanel (new BorderLayout());
-        downPanel.setBorder( BorderFactory.createEmptyBorder(20,20,0,0));
-        upPanel.setBorder( BorderFactory.createEmptyBorder(20,20,0,0));
+
+		down = new JLabel("Download speed: ");
+		up = new JLabel("Upload speed: ");
         
-        downPanel.setPreferredSize (new Dimension(140,100));
-        upPanel.setPreferredSize (new Dimension(140,100));
-        
-		down = new JLabel("Download", SwingConstants.CENTER);
-		up = new JLabel("Upload", SwingConstants.CENTER);
-        
-		change = new JButton("Change Server");
+		start = new JButton("Start");
 		stop = new JButton("Stop");
+        
+		this.add(start);
+		this.add(stop);
+		this.add(down);
+		this.add(up);
 		
-		change.addActionListener(this);
-		stop.addActionListener(this);
-		
-		JPanel downSpeed = new JPanel ();
-		JPanel upSpeed = new JPanel ();
-        downSpeed.setBackground(Color.GREEN);
-        upSpeed.setBackground(Color.GREEN);
-        
-        downSpeed.setBorder( BorderFactory.createEmptyBorder(20,20,20,20));
-        upSpeed.setBorder( BorderFactory.createEmptyBorder(20,20,20,20));
-        
-        downSpeed.setPreferredSize (new Dimension(70,70));
-        upSpeed.setPreferredSize (new Dimension(70,70));
-        
-        JLabel downSpeedL = new JLabel (downloadSpeed + " Mbps", SwingConstants.CENTER);
-        JLabel upSpeedL = new JLabel (uploadSpeed + " Mbps", SwingConstants.CENTER);
-        
-        downSpeed.add(downSpeedL, "Center");
-        upSpeed.add(upSpeedL, "Center");
-        
-        downPanel.add(down,  BorderLayout.PAGE_START);
-        downPanel.add(downSpeed, BorderLayout.CENTER);
-        
-        upPanel.add(up, BorderLayout.PAGE_START);
-        upPanel.add(upSpeed, BorderLayout.CENTER);
-        
-        butPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
-        butPanel.add(stop);
-        butPanel.add(change);
-        
-		this.add(downPanel);
-		this.add(upPanel);
-		this.add(butPanel);
-		this.repaint();
+	    size = start.getPreferredSize();
+	    start.setBounds(50 + insets.left, 60 + insets.top, size.width, size.height);
+	    size = stop.getPreferredSize();
+	    stop.setBounds(150 + insets.left, 60 + insets.top, size.width, size.height);
+	    size = up.getPreferredSize();
+	    up.setBounds(5 + insets.left, 100 + insets.top, size.width, size.height);
+	    size = down.getPreferredSize();
+	    down.setBounds(5 + insets.left, 115 + insets.top, size.width, size.height);
     }
 
 	public void downloadTest(){
@@ -196,26 +173,11 @@ public class Client extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if( e.getSource() == connect )
+		if( e.getSource() == start )
 		{
-	        this.remove(ipPortArea);
-            this.remove(ConBut);
             host = ipB.getText();
             port = Integer.parseInt(portB.getText());
-            testScreen();
-            downloadTest();
-            uploadTest();
 		}
-		else if(e.getSource() == change)
-		{
-		    this.remove(downPanel);
-		    this.remove(upPanel);
-		    this.remove(butPanel);
-		    connectScreen();
-		}
-		else if(e.getSource() == stop)
-		{
-		    
-		}
+		
 	}
 }

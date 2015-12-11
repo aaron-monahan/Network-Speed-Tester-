@@ -59,6 +59,7 @@ public class ClientPanel extends JPanel implements ActionListener{
 		{
             ip = ipB.getText();
             port = Integer.parseInt(portB.getText());
+            clientMode();
 		}
 		
 	}

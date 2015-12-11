@@ -17,7 +17,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.setSize(400,250);
 		this.setTitle("SpeedJester");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getRootPane().setBorder( BorderFactory.createEmptyBorder(10,10,5,10));
+		getRootPane().setBorder( BorderFactory.createEmptyBorder(10,10,0,10));
 		
 		controlButtonsPanel = new JPanel();
 		controlButtonsPanel.setLayout(new FlowLayout());
@@ -37,6 +37,8 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		server.addActionListener(this);
 		exit.addActionListener(this);
 		
+	    //Insets insets = this.getInsets();
+	    //this.setSize(400 + insets.left + insets.right, 300 + insets.top + insets.bottom);
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
@@ -60,6 +62,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		}
 		else if(e.getSource() == server)
 		{
+		    this.setSize(450,300);
 			serverMode();
 		}
 		else if(e.getSource() == exit )
@@ -73,16 +76,15 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	{
 		this.remove(controlButtonsPanel);
 		System.out.println("Server Mode!");
-		this.setSize(300,200);
+		
 		Server s = new Server(5526);
-		this.add(s);
-		this.repaint();
 		try {
 			s.run();
 			s.closeConnection();
 		} catch (IOException e) {
 			System.out.println("Error: Connection could not be established...");
 		}
+		this.repaint();
 	}
 	
 	private void clientMode()

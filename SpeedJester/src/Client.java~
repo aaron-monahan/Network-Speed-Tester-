@@ -48,7 +48,6 @@ public class Client extends JPanel implements ActionListener{
 		
 		this.add(ipPortArea);
 		this.add(ConBut);
-		this.repaint();
     }
 
     public void testScreen() {

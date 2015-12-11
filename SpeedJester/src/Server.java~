@@ -20,15 +20,15 @@ public class Server extends JPanel implements ActionListener{
         
         this.setLayout ( new BorderLayout() );
         this.setBorder( BorderFactory.createEmptyBorder(10,10,10,10));
-        JLabel servLab = new JLabel("Server listening...", SwingConstants.CENTER);
+        JLabel servLab = new JLabel("Server listening...");
         try {
             ipAdd = InetAddress.getLocalHost().toString();
         }
         catch (UnknownHostException e) {
             ipAdd = "Ip: Unknown";
         }
-        JLabel ipLab = new JLabel( "Ip: " + ipAdd , SwingConstants.CENTER);
-        JLabel portLab = new JLabel( "Port: " + port , SwingConstants.CENTER);
+        JLabel ipLab = new JLabel( "Ip: " + ipAdd );
+        JLabel portLab = new JLabel( "Port: " + port );
     	
     	this.add(servLab, "North");
     	this.add(ipLab, "Center");
