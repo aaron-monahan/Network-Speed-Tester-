@@ -118,7 +118,7 @@ public class Client extends JPanel implements ActionListener{
 			
 			System.out.println("Size buffer: " + socket.getReceiveBufferSize());
 			
-			downloadSpeedHelper = 0.0;
+			downloadSpeedHelper = 0;
 			startTestTime = System.currentTimeMillis();
 			
 			dataOut.println("startdownload");

@@ -41,7 +41,7 @@ public class ServerConnectionHandler implements Runnable {
 				}else if(line.compareTo("startupload") == 0)
 				{
 					
-					Double uploadSpeed = new Double(0.0);
+					Double uploadSpeed = new Double(0);
 					startTestTime = System.currentTimeMillis();
 					while ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
 						interactions++;
