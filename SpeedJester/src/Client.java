@@ -185,10 +185,10 @@ public class Client extends JPanel implements ActionListener{
 			double speed = Double.parseDouble(fields[5]);
 			DecimalFormat df = new DecimalFormat("#.00"); 
 			
-			if( (speed / 1024.0) > 1024.0)
+			if( (speed / 1024.0) > 1)
 			{
 				speed = speed / 1024.0;
-				if( (speed / 1024.0) > 1024.0)
+				if( (speed / 1024.0) > 1)
 				{
 					speed = speed / 1024.0;
 					rtval = df.format(speed) + " Gbps";

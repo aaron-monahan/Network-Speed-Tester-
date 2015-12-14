@@ -50,7 +50,7 @@ public class ServerConnectionHandler implements Runnable {
 //						System.out.println("time:" + (double) (currentTime - startTestTime) + "interactions : " + interactions);
 					}
 					done = true;
-					System.out.println("Upload Test concluded!");
+					//System.out.println("Upload Test concluded!");
 					writer.println("uploaddone");
 				}
 			}
