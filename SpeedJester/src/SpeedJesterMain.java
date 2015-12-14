@@ -3,8 +3,6 @@ import java.awt.*;
 import java.io.IOException;
 import javax.swing.*;
 
-
-@SuppressWarnings("serial")
 public class SpeedJesterMain extends JFrame implements ActionListener{
 	
 	private JButton client, server, exit;
@@ -61,7 +59,6 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		repainter.setName("panel_repaint");
 //		repainter.setPriority(Thread.MIN_PRIORITY);
 		repainter.start();
-//		this.validate();
 	}
 
 	public static void main(String[] args)
@@ -73,7 +70,6 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == client )
 		{
-		    
 			clientMode();
 		}
 		else if(e.getSource() == server)
@@ -111,9 +107,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		System.out.println("Client Mode!");
 		Client c = new Client();
 		this.add(c);
-		
-//		this.validate();
-//		this.repaint();
+
 	}
 	
 	private void exitHandler()
