@@ -45,9 +45,9 @@ public class ServerConnectionHandler implements Runnable {
 					while ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
 						interactions++;
 						currentTime = System.currentTimeMillis();
-						writer.println(setUploadSpeed((double) (currentTime - startTestTime), interactions));
+						writer.println(getUploadSpeed((double) (currentTime - startTestTime), interactions));
 						reader.readLine();
-//						System.out.println("time: " + (double) (currentTime - startTestTime) + "interactions : " + interactions);
+//						System.out.println("time:" + (double) (currentTime - startTestTime) + "interactions : " + interactions);
 					}
 					done = true;
 					System.out.println("Upload Test concluded!");
@@ -69,14 +69,14 @@ public class ServerConnectionHandler implements Runnable {
 
 	}
 
-	private String setUploadSpeed(double time, int interactions) {
+	private String getUploadSpeed(double time, int interactions) {
 		// buffer 16384 = 16KB
 		Double uploadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
 		StringBuffer s = new StringBuffer();
 
-		s.append("Interaction : " + interactions);
-		s.append(" Time : " + time);
-		s.append(" Upload : " + (uploadSpeed / 1024));
+		s.append("Interaction;" + interactions);
+		s.append(";Time;" + time);
+		s.append(";Upload;" + uploadSpeed);
 
 		return s.toString();
 	}

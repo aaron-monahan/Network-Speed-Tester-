@@ -44,6 +44,24 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.add(footer, "South");
 		this.add(controlButtonsPanel, "Center");
 		this.setVisible(true);
+		
+		Thread repainter = new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+		        while (true) { // I recommend setting a condition for your panel being open/visible
+		            repaint();
+		            validate();
+		            try {
+		                Thread.sleep(100);
+		            } catch (InterruptedException ignored) {
+		            }
+		        }
+		    }
+		});
+		repainter.setName("panel_repaint");
+//		repainter.setPriority(Thread.MIN_PRIORITY);
+		repainter.start();
+//		this.validate();
 	}
 
 	public static void main(String[] args)
@@ -55,7 +73,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == client )
 		{
-		    this.setSize(450,300);
+		    
 			clientMode();
 		}
 		else if(e.getSource() == server)
@@ -76,6 +94,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.setSize(300,200);
 		Server s = new Server(5526);
 		this.add(s);
+		this.validate();
 		this.repaint();
 		try {
 			s.run();
@@ -88,11 +107,13 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	private void clientMode()
 	{
 		this.remove(controlButtonsPanel);
-		
+		this.setSize(450,300);
 		System.out.println("Client Mode!");
 		Client c = new Client();
 		this.add(c);
-		this.repaint();
+		
+//		this.validate();
+//		this.repaint();
 	}
 	
 	private void exitHandler()

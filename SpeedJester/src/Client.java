@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.text.DecimalFormat;
+import java.util.StringTokenizer;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -7,7 +9,7 @@ import javax.swing.*;
 public class Client extends JPanel implements ActionListener{
 	private String host;
 	private int port;
-	private double downloadSpeed;
+	private double downloadSpeedHelper;
 	private double uploadSpeed;
 	private Socket socket;
 	private BufferedReader dataIn;
@@ -17,6 +19,10 @@ public class Client extends JPanel implements ActionListener{
     private JTextField ipB, portB;
     private JButton change, stop, connect;
     private JPanel ipPortArea, ConBut, downPanel, upPanel, butPanel;
+    
+    private JLabel downSpeedL = new JLabel ("0.0 Mbps", SwingConstants.CENTER);
+    private JLabel upSpeedL = new JLabel ("0.0 Mbps", SwingConstants.CENTER);
+    
 
 	public Client() {
         this.setLayout(new FlowLayout());
@@ -32,8 +38,8 @@ public class Client extends JPanel implements ActionListener{
 		ipL = new JLabel("IP Address: ");
 		portL = new JLabel("Port: ");
 		
-		ipB = new JTextField();
-		portB = new JTextField();
+		ipB = new JTextField("localhost");
+		portB = new JTextField("5526");
 		ipB.setPreferredSize (new Dimension(100,24));
 		portB.setPreferredSize (new Dimension(100,24));
 		
@@ -48,6 +54,8 @@ public class Client extends JPanel implements ActionListener{
 		
 		this.add(ipPortArea);
 		this.add(ConBut);
+		this.setVisible(true);
+		this.validate();
 		this.repaint();
     }
 
@@ -80,9 +88,6 @@ public class Client extends JPanel implements ActionListener{
         downSpeed.setPreferredSize (new Dimension(70,70));
         upSpeed.setPreferredSize (new Dimension(70,70));
         
-        JLabel downSpeedL = new JLabel (downloadSpeed + " Mbps", SwingConstants.CENTER);
-        JLabel upSpeedL = new JLabel (uploadSpeed + " Mbps", SwingConstants.CENTER);
-        
         downSpeed.add(downSpeedL, "Center");
         upSpeed.add(upSpeedL, "Center");
         
@@ -99,6 +104,7 @@ public class Client extends JPanel implements ActionListener{
 		this.add(downPanel);
 		this.add(upPanel);
 		this.add(butPanel);
+		this.validate();
 		this.repaint();
     }
 
@@ -112,7 +118,7 @@ public class Client extends JPanel implements ActionListener{
 			
 			System.out.println("Size buffer: " + socket.getReceiveBufferSize());
 			
-			downloadSpeed = 0.0;
+			downloadSpeedHelper = 0.0;
 			startTestTime = System.currentTimeMillis();
 			
 			dataOut.println("startdownload");
@@ -122,7 +128,7 @@ public class Client extends JPanel implements ActionListener{
 				currentTime = System.currentTimeMillis();
 				dataOut.println("echo");
 				dataIn.readLine();
-				setDownloadSpeed((double) (currentTime - startTestTime), interactions);
+				downSpeedL.setText(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
 			}
 			
 			dataOut.println("downloaddone");
@@ -154,7 +160,8 @@ public class Client extends JPanel implements ActionListener{
 					done = true;
 					System.out.println("Upload Test concluded!");
 				}
-				System.out.println(line);
+				upSpeedL.setText(parseSpeedResult(line));
+//				System.out.println(line);
 				dataOut.println(uploadChunk);
 			}
 			
@@ -167,18 +174,44 @@ public class Client extends JPanel implements ActionListener{
 
 	}
 
-	private void setDownloadSpeed(double time, int interactions) {
-		// buffer 16384 = 16KB
-		downloadSpeed += ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
-		System.out.println("Interaction : " + interactions + "Time : " + time +
-							"Download : " + (downloadSpeed / interactions) / 1024);
-
-	}
-
-	public double getDownloadSpeed() {
-		return downloadSpeed;
+	private String parseSpeedResult(String result){
+		
+		String[] fields = result.split(";");
+		String rtval = "0.0 Kbps";
+		System.out.println(fields.length + " size");
+		
+		
+		if (fields.length == 6){
+			double speed = Double.parseDouble(fields[5]);
+			DecimalFormat df = new DecimalFormat("#.00"); 
+			
+			if( (speed / 1024.0) > 1024.0)
+			{
+				speed = speed / 1024.0;
+				if( (speed / 1024.0) > 1024.0)
+				{
+					speed = speed / 1024.0;
+					rtval = df.format(speed) + " Gbps";
+				}else{
+					rtval = df.format(speed) + " Mbps";
+				}
+				
+			}else{
+				rtval = df.format(speed) + " Kbps";
+			}
+		}
+		
+		return rtval;
 	}
 	
+	private String getDownloadSpeed(double time, int interactions) {
+		// buffer 16384 = 16KB
+		downloadSpeedHelper += ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
+		return parseSpeedResult("Interaction;" + interactions + ";Time;" + time +
+				";Download;" + (downloadSpeedHelper / interactions));
+
+	}
+
 	public void openConnection() throws IOException {
 		socket = new Socket(host, port);
 		socket.setSoTimeout(20000); // times out if no data came after 10 seconds
@@ -203,8 +236,27 @@ public class Client extends JPanel implements ActionListener{
             host = ipB.getText();
             port = Integer.parseInt(portB.getText());
             testScreen();
-            downloadTest();
-            uploadTest();
+    		Thread downloadThread = new Thread(new Runnable() {
+    		    @Override
+    		    public void run() {
+    		    	downloadTest();
+    		    	uploadTest();
+//    		        while (true) { // I recommend setting a condition for your panel being open/visible
+//    		            repaint();
+//    		            validate();
+//    		            try {
+//    		                Thread.sleep(100);
+//    		            } catch (InterruptedException ignored) {
+//    		            }
+//    		        }
+    		    }
+    		});
+    		downloadThread.setName("downloadThread");
+//    		repainter.setPriority(Thread.MIN_PRIORITY);
+    		downloadThread.start();
+            
+           // downloadTest();
+            
 		}
 		else if(e.getSource() == change)
 		{
