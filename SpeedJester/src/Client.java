@@ -159,10 +159,11 @@ public class Client extends JPanel implements ActionListener{
 				if (line.compareTo("uploaddone") == 0) {
 					done = true;
 					System.out.println("Upload Test concluded!");
+				}else{
+					upSpeedL.setText(parseSpeedResult(line));
+	//				System.out.println(line);
+					dataOut.println(uploadChunk);
 				}
-				upSpeedL.setText(parseSpeedResult(line));
-//				System.out.println(line);
-				dataOut.println(uploadChunk);
 			}
 			
 			closeConnection();
@@ -178,19 +179,19 @@ public class Client extends JPanel implements ActionListener{
 		
 		String[] fields = result.split(";");
 		String rtval = "0.0 Kbps";
-		System.out.println(fields.length + " size");
+		System.out.println(fields.length + " size" + result);
 		
 		
 		if (fields.length == 6){
 			double speed = Double.parseDouble(fields[5]);
 			DecimalFormat df = new DecimalFormat("#.00"); 
 			
-			if( (speed / 1024.0) > 1)
+			if( (speed / 1024) > 1)
 			{
-				speed = speed / 1024.0;
-				if( (speed / 1024.0) > 1)
+				speed = speed / 1024;
+				if( (speed / 1024) > 1)
 				{
-					speed = speed / 1024.0;
+					speed = speed / 1024;
 					rtval = df.format(speed) + " Gbps";
 				}else{
 					rtval = df.format(speed) + " Mbps";

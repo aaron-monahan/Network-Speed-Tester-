@@ -33,8 +33,9 @@ public class ServerConnectionHandler implements Runnable {
 						if (line.compareTo("downloaddone") == 0) {
 							done = true;
 							System.out.println("Download Test concluded!");
+						}else{
+							writer.println(downloadChunk);
 						}
-						writer.println(downloadChunk);
 					}
 
 				}else if(line.compareTo("startupload") == 0)
