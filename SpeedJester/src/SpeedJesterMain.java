@@ -9,7 +9,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	private JPanel controlButtonsPanel;
 	private JLabel logo, footer;
 	public static final int BUFFER_SIZE = 64; //KB
-	public static final int TEST_DURATION = 10000;
+	public static final int TEST_DURATION = 20000;
 	public SpeedJesterMain()
 	{
 		this.setSize(400,250);
@@ -50,14 +50,14 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		            repaint();
 		            validate();
 		            try {
-		                Thread.sleep(100);
+		                Thread.sleep(1000);
 		            } catch (InterruptedException ignored) {
 		            }
 		        }
 		    }
 		});
 		repainter.setName("panel_repaint");
-//		repainter.setPriority(Thread.MIN_PRIORITY);
+		repainter.setPriority(Thread.MIN_PRIORITY);
 		repainter.start();
 	}
 

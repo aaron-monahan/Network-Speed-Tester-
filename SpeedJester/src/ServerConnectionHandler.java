@@ -7,7 +7,6 @@ public class ServerConnectionHandler implements Runnable {
 
 	public ServerConnectionHandler(Socket socket) {
 		this.socket = socket;
-		
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class ServerConnectionHandler implements Runnable {
 
 	private String getUploadSpeed(double time, int interactions) {
 		// buffer 16384 = 16KB
-		Double uploadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
+		Double uploadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (double) (time / 1000)) * 8;
 		StringBuffer s = new StringBuffer();
 
 		s.append("Interaction;" + interactions);

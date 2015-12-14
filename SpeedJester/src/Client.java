@@ -9,8 +9,6 @@ import javax.swing.*;
 public class Client extends JPanel implements ActionListener{
 	private String host;
 	private int port;
-	private double downloadSpeedHelper;
-	private double uploadSpeed;
 	private Socket socket;
 	private BufferedReader dataIn;
 	private PrintWriter dataOut;
@@ -118,7 +116,6 @@ public class Client extends JPanel implements ActionListener{
 			
 			System.out.println("Size buffer: " + socket.getReceiveBufferSize());
 			
-			downloadSpeedHelper = 0;
 			startTestTime = System.currentTimeMillis();
 			
 			dataOut.println("startdownload");
@@ -179,7 +176,7 @@ public class Client extends JPanel implements ActionListener{
 		
 		String[] fields = result.split(";");
 		String rtval = "0.0 Kbps";
-		System.out.println(fields.length + " size" + result);
+//		System.out.println(fields.length + " size" + result);
 		
 		
 		if (fields.length == 6){
@@ -207,9 +204,9 @@ public class Client extends JPanel implements ActionListener{
 	
 	private String getDownloadSpeed(double time, int interactions) {
 		// buffer 16384 = 16KB
-		downloadSpeedHelper += ((interactions * SpeedJesterMain.BUFFER_SIZE) / (time / 1000)) * 8;
+		Double downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (double) (time / 1000)) * 8;
 		return parseSpeedResult("Interaction;" + interactions + ";Time;" + time +
-				";Download;" + (downloadSpeedHelper / interactions));
+				";Download;" + downloadSpeed);
 
 	}
 
