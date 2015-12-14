@@ -44,6 +44,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.add(footer, "South");
 		this.add(controlButtonsPanel, "Center");
 		this.setVisible(true);
+		this.validate();
 	}
 
 	public static void main(String[] args)
@@ -76,6 +77,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.setSize(300,200);
 		Server s = new Server(5526);
 		this.add(s);
+		this.validate();
 		this.repaint();
 		try {
 			s.run();
@@ -92,6 +94,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		System.out.println("Client Mode!");
 		Client c = new Client();
 		this.add(c);
+		this.validate();
 		this.repaint();
 	}
 	

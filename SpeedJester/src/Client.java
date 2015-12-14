@@ -48,6 +48,8 @@ public class Client extends JPanel implements ActionListener{
 		
 		this.add(ipPortArea);
 		this.add(ConBut);
+		this.setVisible(true);
+		this.validate();
 		this.repaint();
     }
 
@@ -99,6 +101,7 @@ public class Client extends JPanel implements ActionListener{
 		this.add(downPanel);
 		this.add(upPanel);
 		this.add(butPanel);
+		this.validate();
 		this.repaint();
     }
 
