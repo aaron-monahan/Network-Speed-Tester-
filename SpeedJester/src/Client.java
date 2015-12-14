@@ -125,7 +125,8 @@ public class Client extends JPanel implements ActionListener{
 				currentTime = System.currentTimeMillis();
 				dataOut.println("echo");
 				dataIn.readLine();
-				downSpeedL.setText(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
+				System.out.println(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
+				//downSpeedL.setText(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
 			}
 			
 			dataOut.println("downloaddone");
@@ -157,8 +158,9 @@ public class Client extends JPanel implements ActionListener{
 					done = true;
 					System.out.println("Upload Test concluded!");
 				}else{
-					upSpeedL.setText(parseSpeedResult(line));
-	//				System.out.println(line);
+					
+//					upSpeedL.setText(parseSpeedResult(line));
+					System.out.println(line);
 					dataOut.println(uploadChunk);
 				}
 			}

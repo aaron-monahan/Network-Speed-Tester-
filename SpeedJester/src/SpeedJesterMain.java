@@ -43,22 +43,24 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.add(controlButtonsPanel, "Center");
 		this.setVisible(true);
 		
-		Thread repainter = new Thread(new Runnable() {
-		    @Override
-		    public void run() {
-		        while (true) { // I recommend setting a condition for your panel being open/visible
-		            repaint();
-		            validate();
-		            try {
-		                Thread.sleep(1000);
-		            } catch (InterruptedException ignored) {
-		            }
-		        }
-		    }
-		});
-		repainter.setName("panel_repaint");
-		repainter.setPriority(Thread.MIN_PRIORITY);
-		repainter.start();
+		repaint();
+        validate();
+//		Thread repainter = new Thread(new Runnable() {
+//		    @Override
+//		    public void run() {
+//		        while (true) { // I recommend setting a condition for your panel being open/visible
+//		            repaint();
+//		            validate();
+//		            try {
+//		                Thread.sleep(1000);
+//		            } catch (InterruptedException ignored) {
+//		            }
+//		        }
+//		    }
+//		});
+//		repainter.setName("panel_repaint");
+//		repainter.setPriority(Thread.MIN_PRIORITY);
+//		repainter.start();
 	}
 
 	public static void main(String[] args)
