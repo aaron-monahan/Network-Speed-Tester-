@@ -112,7 +112,8 @@ public class Client extends JPanel implements ActionListener{
 		long startTestTime = 0;
 		long currentTime = 0;
 		int interactions = 0;
-
+		stopLoop = true;
+		
 		try {
 			openConnection();
 			
@@ -122,11 +123,10 @@ public class Client extends JPanel implements ActionListener{
 			
 			dataOut.println("startdownload");
 			
-			if ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
-				stopLoop = true;
-			}
-			
 			while (stopLoop) {
+				if ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
+					stopLoop = false;
+				}
 				interactions++;
 				currentTime = System.currentTimeMillis();
 				dataOut.println("echo");
@@ -270,6 +270,8 @@ public class Client extends JPanel implements ActionListener{
 		    this.remove(downPanel);
 		    this.remove(upPanel);
 		    this.remove(butPanel);
+		    downSpeedL.setText("0.0 Mbps");
+		    downSpeedL.setText("0.0 Mbps");
 		    connectScreen();
 		}
 		else if(e.getSource() == stop)
