@@ -72,13 +72,17 @@ public class ServerConnectionHandler implements Runnable {
 
 	private String getUploadSpeed(double time, int interactions) {
 		// buffer 16384 = 16KB
-		Double uploadSpeed = (((interactions * (SpeedJesterMain.BUFFER_SIZE + 56))/1024) / (double) (time / 1000)) * 8;
-		StringBuffer s = new StringBuffer();
+		Double uploadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (double) (time / 1000)) * 8;
+//		StringBuffer s = new StringBuffer();
+//
+//		s.append("Interaction;" + interactions);
+//		s.append(";Time;" + time);
+//		s.append(";Upload;" + uploadSpeed);
+//
+//		return s.toString();
+		String s = ("Interaction;" + interactions + ";Time;" + time + ";Upload;" + uploadSpeed);
 
-		s.append("Interaction;" + interactions);
-		s.append(";Time;" + time);
-		s.append(";Upload;" + uploadSpeed);
-
-		return s.toString();
+		return s;
+	
 	}
 }

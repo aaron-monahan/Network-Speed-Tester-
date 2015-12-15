@@ -213,7 +213,7 @@ public class Client extends JPanel implements ActionListener{
 	
 	private String getDownloadSpeed(double time, int interactions) {
 		// buffer 16384 = 16KB
-		Double downloadSpeed = (((interactions * (SpeedJesterMain.BUFFER_SIZE + 56))/1024) / (double) (time / 1000)) * 8;
+		Double downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (double) (time / 1000)) * 8;
 		return parseSpeedResult("Interaction;" + interactions + ";Time;" + time +
 				";Download;" + downloadSpeed);
 
