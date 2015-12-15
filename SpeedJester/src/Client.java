@@ -252,7 +252,7 @@ public class Client extends JPanel implements ActionListener{
     		    }
     		});
     		downloadThread.setName("downloadThread");
-//    		repainter.setPriority(Thread.MIN_PRIORITY);
+    		downloadThread.setPriority(Thread.MAX_PRIORITY);
     		downloadThread.start();
             
            // downloadTest();
