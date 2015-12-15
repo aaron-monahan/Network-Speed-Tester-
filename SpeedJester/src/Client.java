@@ -12,7 +12,9 @@ public class Client extends JPanel implements ActionListener{
 	private Socket socket;
 	private BufferedReader dataIn;
 	private PrintWriter dataOut;
-
+	private boolean stopLoop;
+	private boolean done = false;
+	
     private JLabel down, up, ipL, portL;
     private JTextField ipB, portB;
     private JButton change, stop, connect;
@@ -120,7 +122,11 @@ public class Client extends JPanel implements ActionListener{
 			
 			dataOut.println("startdownload");
 			
-			while ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
+			if ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
+				stopLoop = true;
+			}
+			
+			while (stopLoop) {
 				interactions++;
 				currentTime = System.currentTimeMillis();
 				dataOut.println("echo");
@@ -145,7 +151,7 @@ public class Client extends JPanel implements ActionListener{
 	public void uploadTest(){
 		String uploadChunk = (new ChunkGenerator(SpeedJesterMain.BUFFER_SIZE)).generate();
 		String line;
-		boolean done = false;
+		done = false;
 		
 		try {
 			openConnection();
@@ -268,7 +274,8 @@ public class Client extends JPanel implements ActionListener{
 		}
 		else if(e.getSource() == stop)
 		{
-		    
+		    stopLoop = false;
+		    done = true;
 		}
 	}
 }
