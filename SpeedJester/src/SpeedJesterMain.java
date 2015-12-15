@@ -45,22 +45,6 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		
 		repaint();
         validate();
-//		Thread repainter = new Thread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		        while (true) { // I recommend setting a condition for your panel being open/visible
-//		            repaint();
-//		            validate();
-//		            try {
-//		                Thread.sleep(1000);
-//		            } catch (InterruptedException ignored) {
-//		            }
-//		        }
-//		    }
-//		});
-//		repainter.setName("panel_repaint");
-//		repainter.setPriority(Thread.MIN_PRIORITY);
-//		repainter.start();
 	}
 
 	public static void main(String[] args)
@@ -89,17 +73,26 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 	{
 		this.remove(controlButtonsPanel);
 		System.out.println("Server Mode!");
-		this.setSize(300,200);
+		this.setSize(400,200);
 		Server s = new Server(5526);
 		this.add(s);
 		this.validate();
 		this.repaint();
-		try {
-			s.run();
-			s.closeConnection();
-		} catch (IOException e) {
-			System.out.println("Error: Connection could not be established...");
-		}
+		
+		Thread serverThread = new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+				try {
+					s.run();
+					s.closeConnection();
+				} catch (IOException e) {
+					System.out.println("Error: Connection could not be established...");
+				}
+		    }
+		});
+		serverThread.setName("downloadThread");
+		serverThread.setPriority(Thread.MAX_PRIORITY);
+		serverThread.start();
 	}
 	
 	private void clientMode()

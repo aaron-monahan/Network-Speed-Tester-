@@ -20,7 +20,6 @@ public class ServerConnectionHandler implements Runnable {
 		int interactions = 0;
 
 		try {
-			System.out.println("size buffer: " + socket.getReceiveBufferSize());
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new PrintWriter(socket.getOutputStream(), true);
 			String line;

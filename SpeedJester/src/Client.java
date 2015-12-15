@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.Socket;
 import java.text.DecimalFormat;
-import java.util.StringTokenizer;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -116,15 +115,13 @@ public class Client extends JPanel implements ActionListener{
 		
 		try {
 			openConnection();
-			
-			System.out.println("Size buffer: " + socket.getReceiveBufferSize());
-			
+						
 			startTestTime = System.currentTimeMillis();
 			
 			dataOut.println("startdownload");
 			
 			while (stopLoop) {
-				if ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
+				if ((startTestTime + SpeedJesterMain.TEST_DURATION) <= currentTime) {
 					stopLoop = false;
 				}
 				interactions++;
@@ -248,21 +245,11 @@ public class Client extends JPanel implements ActionListener{
     		    public void run() {
     		    	downloadTest();
     		    	uploadTest();
-//    		        while (true) { // I recommend setting a condition for your panel being open/visible
-//    		            repaint();
-//    		            validate();
-//    		            try {
-//    		                Thread.sleep(100);
-//    		            } catch (InterruptedException ignored) {
-//    		            }
-//    		        }
     		    }
     		});
     		downloadThread.setName("downloadThread");
     		downloadThread.setPriority(Thread.MAX_PRIORITY);
     		downloadThread.start();
-            
-           // downloadTest();
             
 		}
 		else if(e.getSource() == change)
@@ -271,7 +258,7 @@ public class Client extends JPanel implements ActionListener{
 		    this.remove(upPanel);
 		    this.remove(butPanel);
 		    downSpeedL.setText("0.0 Mbps");
-		    downSpeedL.setText("0.0 Mbps");
+		    upSpeedL.setText("0.0 Mbps");
 		    connectScreen();
 		}
 		else if(e.getSource() == stop)
