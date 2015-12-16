@@ -8,8 +8,6 @@ The application will be coded in java using network sockets to transfer data and
 
 From the home directory of the repository run
 
-		make all
+		make
 
-Then
-
-		make run
+If you want to run it on your own system, you will have to create another application. You will select server on the first and client on the second and connect through your localhost.
