@@ -1,7 +1,7 @@
 all:	compile
 	$(info Running the program)
-	java SpeedJesterMain
+	sudo java SpeedJesterMain
 
 compile:
 	$(info Compiling)
-	javac -d ./ ./SpeedJester/src/*.java
+	sudo javac -d ./ ./SpeedJester/src/*.java
