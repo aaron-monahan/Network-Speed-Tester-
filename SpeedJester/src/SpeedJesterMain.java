@@ -74,7 +74,7 @@ public class SpeedJesterMain extends JFrame implements ActionListener{
 		this.remove(controlButtonsPanel);
 		System.out.println("Server Mode!");
 		this.setSize(400,200);
-		Server s = new Server(5526);
+		final Server s = new Server(5526);
 		this.add(s);
 		this.validate();
 		this.repaint();

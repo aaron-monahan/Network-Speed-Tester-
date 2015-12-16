@@ -115,11 +115,8 @@ public class Client extends JPanel implements ActionListener{
 		
 		try {
 			openConnection();
-						
 			startTestTime = System.currentTimeMillis();
-			
-			dataOut.println("startdownload");
-			
+			dataOut.println("startdownload");			
 			while (stopLoop) {
 				if ((startTestTime + SpeedJesterMain.TEST_DURATION) <= currentTime) {
 					stopLoop = false;
@@ -128,13 +125,10 @@ public class Client extends JPanel implements ActionListener{
 				currentTime = System.currentTimeMillis();
 				dataOut.println("echo");
 				dataIn.readLine();
-//				System.out.println(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
 				downSpeedL.setText(getDownloadSpeed((double) (currentTime - startTestTime), interactions));
-//				break;
 			}
 			
 			dataOut.println("downloaddone");
-			
 			closeConnection();
 			
 		} catch (IOException e) {
@@ -152,19 +146,14 @@ public class Client extends JPanel implements ActionListener{
 		
 		try {
 			openConnection();
-			
-			System.out.println("size buffer: " + socket.getReceiveBufferSize());
-			
 			dataOut.println("startupload");
-
+			
 			while (!done && ((line = dataIn.readLine()) != null)) {
 				if (line.compareTo("uploaddone") == 0) {
 					done = true;
 					System.out.println("Upload Test concluded!");
 				}else{
-					
 					upSpeedL.setText(parseSpeedResult(line));
-//					System.out.println(line);
 					dataOut.println(uploadChunk);
 				}
 			}
@@ -209,11 +198,9 @@ public class Client extends JPanel implements ActionListener{
 	}
 	
 	private String getDownloadSpeed(double time, int interactions) {
-		// buffer 16384 = 16KB
 		Double downloadSpeed = ((interactions * SpeedJesterMain.BUFFER_SIZE) / (double) (time / 1000)) * 8;
 		return parseSpeedResult("Interaction;" + interactions + ";Time;" + time +
 				";Download;" + downloadSpeed);
-
 	}
 
 	public void openConnection() throws IOException {
