@@ -38,19 +38,14 @@ public class ServerConnectionHandler implements Runnable {
 
 				}else if(line.compareTo("startupload") == 0)
 				{
-					
-					Double uploadSpeed = new Double(0);
 					startTestTime = System.currentTimeMillis();
 					while ((startTestTime + SpeedJesterMain.TEST_DURATION) > currentTime) {
 						interactions++;
 						currentTime = System.currentTimeMillis();
 						writer.println(getUploadSpeed((double) (currentTime - startTestTime), interactions));
 						reader.readLine();
-//						break;
-//						System.out.println("time:" + (double) (currentTime - startTestTime) + "interactions : " + interactions);
 					}
 					done = true;
-					//System.out.println("Upload Test concluded!");
 					writer.println("uploaddone");
 				}
 			}
